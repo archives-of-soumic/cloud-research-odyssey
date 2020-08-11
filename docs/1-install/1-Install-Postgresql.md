@@ -26,3 +26,8 @@ Now we want to assign `myuser` to `mydb`. The command: ``` postgres=# grant all 
 * If you want to change password: ``` postgres=# alter user myuser with encrypted password '1234'; ```
 
 ![Initial Setup](postgresql-initial-setup.png)
+
+
+# References
+* [Add images to markdown file](https://medium.com/markdown-monster-blog/getting-images-into-markdown-documents-and-weblog-posts-with-markdown-monster-9ec6f353d8ec)
+* [Add new user, new table etc](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e)
