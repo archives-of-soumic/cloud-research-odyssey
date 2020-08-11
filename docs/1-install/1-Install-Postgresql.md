@@ -11,3 +11,18 @@ $ sudo apt-get install postgresql
 ***Warning***: If you add postgresql repository, you may encounter an error. To fix it, go to `/etc/apt/sources.list.d`, and then open the `pgdg.list` as root. Then you'll see: `deb http://apt.postgresql.org/pub/repos/apt <DISTRO>-pgdg main`. Change the distro to `buster` (it is the official name of debian 10).
 So in my case, I saw `deb http://apt.postgresql.org/pub/repos/apt debbie-pgdg main` and so I changed it into `deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main`.
 
+## Initial Setup
+Postgresql comes with a default user `postgres`. To use postgresql, we can switch to this user. Fire up your terminal and type:
+
+``` 
+$ sudo -u postgres psql
+```
+Now you should be able to run sql commands as user `postgres`.
+
+To create a new user:     ``` postgres=# create user myuser with  password 'mypass'; ```
+To create a new database: ``` postgres=# create database mydb; ```
+Now we want to assign `myuser` to `mydb`. The command: ``` postgres=# grant all privilages on database mydb to myuser; ```
+
+* If you want to change password: ``` postgres=# alter user myuser with encrypted password '1234'; ```
+
+![Initial Setup](postgresql-initial-setup.png)
