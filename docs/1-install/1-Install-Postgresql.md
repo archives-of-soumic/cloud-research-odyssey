@@ -21,13 +21,54 @@ Now you should be able to run sql commands as user `postgres`.
 
 To create a new user:     ``` postgres=# create user myuser with  password 'mypass'; ```
 To create a new database: ``` postgres=# create database mydb; ```
-Now we want to assign `myuser` to `mydb`. The command: ``` postgres=# grant all privilages on database mydb to myuser; ```
+Now we want to assign `myuser` to `mydb`. The command: ``` postgres=# grant all privileges on database mydb to myuser; ```
 
 * If you want to change password: ``` postgres=# alter user myuser with encrypted password '1234'; ```
 
 ![Initial Setup](postgresql-initial-setup.png)
 
+## Alternative Setup (Thanks to digital oceans)
+The previous one was not good, and I was having some trouble getting started. So I found this awesome tutorial of [digital oceans](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04). You'll find details in the link. Short version:
+Switch over to the postgres account on your terminal by typing:
+```
+$ sudo -i -u postgres
+```
+You'll see the terminal like this: 
+``` 
+postgres@computer-name:~$ 
+```
+We can use `psql` command to log in, and then \q to log out. Now we want to create a new database user. We need to create: 
+1. user in postgres, 
+2. user in our linux system
+To create user in postgres, type:
+```
+postgres@computer-name:~$ createuser --interactive
+# Output
+Enter name of role to add: admin_soumic
+Shall the new role be a superuser? (y/n) y  # <-- I am creating this as a database superuser for now.                                              # in other cases, we may not need it
+```
+
+Now create a database with the same name. It is some postgresql convension.
+```
+postgres@computer-name:~$ createdb admin_soumic
+```
+
+Now we have to create a Linux User with the same name:
+```
+postgres@computer-name:~$ exit      # quit the postgres user and return to your default user
+$ sudo adduser --no-create-home admin_soumic    #  --no-create-home flag prevents creating new home
+```
+
+Once this new account is available, you can switch over and connect to the database by typing:
+```
+$ sudo -i -u admin_user
+admin_user@computer-name:~$ psql
+admin_soumic=#                           # you have logged into the database user admin_soumic
+```
+
+I forgot to take a screenshot. So no image here.
 
 # References
 * [Add images to markdown file](https://medium.com/markdown-monster-blog/getting-images-into-markdown-documents-and-weblog-posts-with-markdown-monster-9ec6f353d8ec)
 * [Add new user, new table etc](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e)
+*[how-to-install-and-use-postgresql-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
