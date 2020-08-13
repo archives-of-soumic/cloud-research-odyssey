@@ -2,6 +2,8 @@
 The course will be using this database. Hence the first thing to do is install the database. I am 
 currently using `Debian 10 Testing` (actually it's `Linux Mint Debian Edition` alias `LMDE4`, and I tweaked the software sources file by changing `stable` into `testing`, so it's really `Debian 10 Testing` with a different 'skin') as my main os. In production however, one should use a stable os.
 
+*Correction* At the time of writing, the debian testing has some really buggie packages (usually that is not the case though) and so I had to switch back to stable.
+
 Follow my instructions precisely:
 1. Go to [postgresql download page](https://www.postgresql.org/download/) and select your distro (debian for my case). Then follow the instructions. You can add the repository, or directly download 
 from debian's repository.
@@ -44,26 +46,26 @@ To create user in postgres, type:
 ```
 postgres@computer-name:~$ createuser --interactive
 # Output
-Enter name of role to add: admin_soumic
+Enter name of role to add: admindb
 Shall the new role be a superuser? (y/n) y  # <-- I am creating this as a database superuser for now.                                              # in other cases, we may not need it
 ```
 
 Now create a database with the same name. It is some postgresql convension.
 ```
-postgres@computer-name:~$ createdb admin_soumic
+postgres@computer-name:~$ createdb admindb
 ```
 
 Now we have to create a Linux User with the same name:
 ```
 postgres@computer-name:~$ exit      # quit the postgres user and return to your default user
-$ sudo adduser --no-create-home admin_soumic    #  --no-create-home flag prevents creating new home
+$ sudo adduser --no-create-home admindb    #  --no-create-home flag prevents creating new home
 ```
 
 Once this new account is available, you can switch over and connect to the database by typing:
 ```
-$ sudo -i -u admin_user
-admin_user@computer-name:~$ psql
-admin_soumic=#                           # you have logged into the database user admin_soumic
+$ sudo -i -u admindb
+admindb@computer-name:~$ psql
+admindb=#                           # you have logged into the database user admindb
 ```
 
 I forgot to take a screenshot. So no image here.
@@ -71,4 +73,4 @@ I forgot to take a screenshot. So no image here.
 # References
 * [Add images to markdown file](https://medium.com/markdown-monster-blog/getting-images-into-markdown-documents-and-weblog-posts-with-markdown-monster-9ec6f353d8ec)
 * [Add new user, new table etc](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e)
-*[how-to-install-and-use-postgresql-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+* [how-to-install-and-use-postgresql-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
