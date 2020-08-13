@@ -154,15 +154,18 @@ select * from person where email like '%gmail.com';
 select * from person where email like '%@gmail%';
 ```
 Like is case sensitive. iLike is case insensitive.
+```
 select * from person where country_of_birth like 'p%'; <-- no result
 select * from person where country_of_birth like 'P%'; <-- ok result
 select * from person where country_of_birth ilike 'p%'; <-- ok result
-
+```
 ## Group By
+```
 select distinct country_of_birth from person;
 select distinct country_of_birth, count(*) from person group by country_of_birth order by country_of_birth;
-
+```
 ## Group By Having
+```
 select distinct country_of_birth, count(*) from person group by country_of_birth having count(*)>5 order by country_of_birth;
-
+```
 ## Adding new table and data with mockaroo
