@@ -66,3 +66,26 @@ WHERE type = 'swing';
 ```
 
 ![update a value](update-a-value.png)
+
+To view the table:
+```
+admindb=# \d playground
+
+                                      Table "public.playground"
+    Column    |         Type          | Collation | Nullable |                Default                 
+--------------+-----------------------+-----------+----------+----------------------------------------
+ id           | integer               |           | not null | nextval('playground_id_seq'::regclass)
+ type         | character varying(50) |           | not null | 
+ color        | character varying(25) |           | not null | 
+ location     | character varying(25) |           |          | 
+ install_date | date                  |           |          | 
+Indexes:
+    "playground_pkey" PRIMARY KEY, btree (id)
+Check constraints:
+    "playground_location_check" CHECK (location::text = ANY (ARRAY['north'::character varying, 'south'::character varying, 'east'::character varying, 'west'::character varying]::text[]))
+
+```
+
+# Reference
+
+* [how-to-install-and-use-postgresql-on-ubuntu-18-04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
