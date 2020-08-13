@@ -11,3 +11,4 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
 <!-- [linky](docs/README.md#section) -->
 # Table of Content
 * [Install Postgresql](docs/1-install/1-Install-Postgresql.md)
+* [Basic Commands](docs/2-basics/2-basic-commands.md)
