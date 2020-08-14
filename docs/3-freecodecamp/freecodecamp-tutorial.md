@@ -168,4 +168,208 @@ select distinct country_of_birth, count(*) from person group by country_of_birth
 ```
 select distinct country_of_birth, count(*) from person group by country_of_birth having count(*)>5 order by country_of_birth;
 ```
-## Adding new table and data with mockaroo
+## Adding New Table and Data with Mockaroo
+Go to mockaroo website, create a table for cars.
+Then,
+```
+admindb=# \i /home/soumic/Codes/cloud-research-odyssey/files-n-datasets/car.sql
+```
+
+## Min, Max, Average
+```
+SELECT MAX(price) FROM car;
+SELECT MIN(price) FROM car;
+SELECT AVG(price) FROM car;
+SELECT ROUND(AVG(price)) FROM car;
+```
+
+We can use it with other commands:
+```
+SELECT make, model, MIN(price) FROM car GROUP BY make, model; 
+
+SELECT make, MAX(price) FROM car GROUP BY make; 
+
+SELECT make, model, AVG(price) FROM car GROUP BY make, model; 
+
+SELECT make, model, ROUND(AVG(price)) FROM car GROUP BY make, model; 
+```
+
+## Sum
+
+```
+SELECT SUM(price) FROM car; 
+SELECT make, SUM(price) FROM car GROUP BY make; 
+
+```
+
+## Basic Arithmetic Operations
+```
+select 10 + 2;
+select 1 - 2;
+select 10 * 2 + 6 / 2 - 1;
+select 10 ^ 2;
+select 5!;
+select 10 % 3;
+```
+
+Question: Say, we want to sell the cars at 10% discount. So we have to display a new column showing discount.
+
+```SELECT * FROM CAR; == SELECT id, make, model, price FROM car; ``` these both give the same results.
+
+```
+SELECT id, make, model, price, price * 0.10 FROM car;
+SELECT id, make, model, price, ROUND(price * 0.10) FROM car;
+SELECT id, make, model, price, ROUND(price * 0.10, 2) FROM car;
+SELECT id, make, model, price, ROUND(price * 0.10, 2), ROUND(price * 0.90, 2) FROM car;
+```
+
+## Alias
+```
+SELECT id, make, model, price as original_price, ROUND(price * 0.10, 2) as ten_percent, ROUND(price * 0.90, 2) as discount_after_10_percent FROM car;
+```
+
+## Coalesce
+Coalesce means try the 1st non-null value from list.
+```
+select coalesce(1);
+select coalesce(null, 1);
+select coalesce(null, null, 1);
+select coalesce(null, null, 1, 10) as number;
+```
+
+```
+admindb=# select coalesce(null, null, 1, 10);
+ coalesce 
+----------
+        1
+(1 row)
+
+admindb=# select coalesce(null, null, 1, 10) as number;
+ number 
+--------
+      1
+(1 row)
+```
+
+Person table has some emails null. so we can replace the null with 'email not provided'  or some default value.
+```
+select email from person;
+select coalesce(email, 'email not provided') from person;
+```
+
+## NULLIF
+```
+admindb=# select 10 / 0;
+ERROR:  division by zero
+```
+nullif is used to handle these kind of stuffs. nullif takes 2 arguments. it kinda works like this:
+```
+fun NULLIF(arg1, arg2)
+    if arg1 == arg2
+        return null;
+    else return arg1;
+```
+
+If we do any thing with null, the result is null:
+
+```
+admindb=# select 10 / null;
+ ?column? 
+----------
+         
+(1 row)
+
+admindb=# 
+```
+So we want to remove the exception and return a null instead. So we can do this:
+```
+select 10 / NULLIF(0,0);
+```
+This will not crash, and return null. Now we can use a coalesce to replace null with some default value (say 0):
+```
+select coalesce( 10 / NULLIF(0,0) , 0 );
+== select coalesce( null , 0 );
+== 0
+```
+
+Output:
+``` 
+admindb=# select coalesce( 10 / NULLIF(0,0) , 0 );
+ coalesce 
+----------
+        0
+(1 row)
+
+admindb=# ^C
+```
+
+## Timestamps and Dates
+```
+admindb=# SELECT NOW();
+             now              
+------------------------------
+ 2020-08-14 20:18:30.57867+06
+(1 row)
+
+admindb=# ^C
+```
+Casr time to date:
+```
+admindb=# SELECT NOW()::DATE;
+    now     
+------------
+ 2020-08-14
+(1 row)
+
+admindb=# 
+```
+Cast to time:
+```
+admindb=# SELECT NOW()::Time;
+       now       
+-----------------
+ 20:21:05.541056
+(1 row)
+```
+
+Substract 1 year from now:
+```
+admindb=# select NOW() - Interval '1 year';
+           ?column?            
+-------------------------------
+ 2019-08-14 20:22:31.332229+06
+(1 row)
+
+admindb=# select NOW() - Interval '10 month';
+           ?column?            
+-------------------------------
+ 2019-10-14 20:23:25.450441+06
+(1 row)
+
+admindb=# select NOW() - Interval '10 year';
+           ?column?            
+-------------------------------
+ 2010-08-14 20:23:15.151256+06
+(1 row)
+admindb=# select NOW() - Interval '10 day';
+admindb=# select NOW() + Interval '10 day';
+admindb=# select (NOW() + Interval '10 day')::DATE;
+```
+
+## Extracting Fields
+select Now(); this gives all the time.
+Say, we want to extract only the year part. We can do it like this way:
+```
+SELECT EXTRACT(YEAR FROM NOW());
+SELECT EXTRACT(MONTH FROM NOW());
+SELECT EXTRACT(DAY FROM NOW());
+SELECT EXTRACT(Century FROM NOW());
+```
+
+## Age Function
+AGE(NOW(), date_of_birth)
+```
+SELECT first_name, last_name, date_of_birth, country_of_birth FROM person;
+SELECT first_name, last_name, country_of_birth, date_of_birth, AGE(NOW(),date_of_birth) AS age FROM person;
+SELECT first_name, last_name, country_of_birth, date_of_birth, Extract(YEAR FROM AGE(NOW(),date_of_birth) )  AS age FROM person;
+```
