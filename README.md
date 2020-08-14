@@ -10,7 +10,9 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
 
 <!-- [linky](docs/README.md#section) -->
 # Table of Content
-1. Postgresql tutorial
-    * [Install Postgresql](docs/1-install/1-Install-Postgresql.md)
-    * [Basic Commands](docs/2-basics/2-basic-commands.md)
-    * [FreeCodeCamp tutorial](docs/3-freecodecamp/freecodecamp-tutorial.md)
+<!-- [Postgresql tutorial](docs/1-postgresql-basics) -->
+1. [Postgresql tutorial](#)
+    * [Install Postgresql](docs/1-postgresql-basics/1-install/1-Install-Postgresql.md)
+    * [Basic Commands](docs/1-postgresql-basics/2-basics/2-basic-commands.md)
+    * [FreeCodeCamp tutorial](docs/1-postgresql-basics/3-freecodecamp/freecodecamp-tutorial.md)
+2. [Redis](docs/2-redis/redis.md)
