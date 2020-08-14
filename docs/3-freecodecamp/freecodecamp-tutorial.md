@@ -373,3 +373,208 @@ SELECT first_name, last_name, date_of_birth, country_of_birth FROM person;
 SELECT first_name, last_name, country_of_birth, date_of_birth, AGE(NOW(),date_of_birth) AS age FROM person;
 SELECT first_name, last_name, country_of_birth, date_of_birth, Extract(YEAR FROM AGE(NOW(),date_of_birth) )  AS age FROM person;
 ```
+
+## Primary Key
+todo: google how to change primary key constraints(id to email etc...)
+```Alter table person add primary key (id);```
+```Delete from person where id = 2;```
+
+## Unique Constraint
+```
+SELECT email , count(*) from person group by email having count(*) > 1;
+```
+To make some columns unique in an existing table:
+```
+ALTER TABLE person ADD CONSTRAINT unique_email_address UNIQUE(email);
+```
+OR,
+```
+ALTER TABLE person ADD UNIQUE(email);   //<-- much better in my opinion
+```
+
+To drop the constraint:
+```
+ALTER TABLE person DROP CONSTRAINT unique_email_address;
+```
+## Distinct
+```
+admindb=# select distinct gender from person;
+ gender 
+--------
+ Male
+ Female
+ FEMALE
+(3 rows)
+```
+## Check Constraints
+```
+Alter table person add constraint gender_constraint check (gender = 'Female' OR gender = 'Male');
+```
+
+## Delete records
+```
+DELETE from person; // deletes all 1000 rows
+```
+```
+DELETE from person where gender = 'FEMALE' and country_of_birth = 'England';
+```
+
+## Update Records
+```
+UPDATE person SET email = 'coleanderson1@outlook.com' WHERE id = 10;
+```
+
+## On Conflict Do Nothing
+```
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) values (1, 'Marleah', 'McInulty', null, 'Female', 'China', '9/10/2019')
+ON CONFLICT DO NOTHING;
+
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) values (1, 'Marleah', 'McInulty', null, 'Female', 'China', '9/10/2019')
+ON CONFLICT(id) DO NOTHING;
+
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) values (1013, 'Marleah', 'McInulty', 'coleanderson@outlook.com', 'Female', 'China', '9/10/2019')
+ON CONFLICT(email) DO NOTHING;
+```
+
+but 
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) values (1, 'Marleah', 'McInulty', null, 'Female', 'China', '9/10/2019')
+ON CONFLICT(id, email) DO NOTHING; <-- this gives error
+
+## Upsert
+Sometimes, say in a distributed system, you may want to update on conflict. For those cases, we use upsert.
+
+```
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) 
+values (1014, 'Marleah', 'McInulty', 'coleanderson@outlook.com.bd', 'Female', 'China', '9/10/2019')
+ON CONFLICT(id) DO UPDATE SET email = EXCLUDED.email;   <-- this line is important
+```
+We can update multiple / all other fields like this way:
+```
+insert into person (id, first_name, last_name, email, gender, country_of_birth, date_of_birth) 
+values (1014, 'Marleah', 'Anderson', 'coleanderson@outlook.com.uk', 'Female', 'China', '9/10/2019')
+ON CONFLICT(id) DO UPDATE SET 
+email = EXCLUDED.email,
+last_name = EXCLUDED.last_name;
+```
+
+## Foreign Keys, Joins & Relationships
+
+## Adding Relationships Between Tables
+drop table person;
+drop table car;
+\i /home/soumic/Codes/cloud-research-odyssey/files-n-datasets/car_person_dataset.sql
+(***NOTE*** I think the data set that I found has some errors).
+
+car_person_dataset.sql:
+```
+create table car (
+	id BIGSERIAL NOT NULL PRIMARY KEY,
+	make VARCHAR(100) NOT NULL,
+	model VARCHAR(100) NOT NULL,
+	price NUMERIC(19, 2) NOT NULL
+);
+
+
+CREATE TABLE person (
+	id BIGSERIAL NOT NULL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	gender VARCHAR(6) NOT NULL,
+	date_of_birth TIMESTAMP NOT NULL,
+	email VARCHAR(150),
+	country_of_birth VARCHAR(50),
+    car_id BIGINT REFERENCES  car(id),
+    UNIQUE(car_id)
+);
+```
+```
+Update person set car_id = 2 where id = 1;
+```
+
+## Inner Joins
+```
+admindb=# SELECT * FROM person JOIN car ON person.car_id = car.id;
+
+
+ id | first_name | last_name | gender |    date_of_birth    |             email             | country_of_birth | car_id | id |   make   |  model  |  price   
+----+------------+-----------+--------+---------------------+-------------------------------+------------------+--------+----+----------+---------+----------
+  1 | Miguel     | Wetherell | Male   | 1985-07-21 00:00:00 | mwetherell0@wp.com            | Norway           |      1 |  1 | Plymouth | Horizon | 45195.78
+  3 | Ettore     | Pitt      | Male   | 1985-11-20 00:00:00 | epitt2@seattletimes.com       | Guatemala        |      3 |  3 | Suzuki   | Vitara  | 88945.57
+  4 | Lynde      | Gresswell | Female | 1981-11-13 00:00:00 | lgresswell3@deliciousdays.com | Kuwait           |      4 |  4 | Ford     | Ranger  | 15626.18
+  5 | Faunie     | Volker    | Female | 1992-12-21 00:00:00 |                               | China            |      5 |  5 | Ford     | Ranger  | 94639.10
+(4 rows)
+
+admindb=# 
+
+```
+***Note*** Donot use WHERE as it gives error, use ON. (I thought where worked. maybe it worked in oracle. meh))
+
+sometimes, it is hard to read data in this way. so we can use `\x` command to toogle between 
+`expanded display on/off` make it vertical and thus making it a bit easier to read.
+
+```
+SELECT person.first_name , car.make, car.model, car.price 
+FROM person JOIN car ON person.car_id = car.id;
+```
+
+## Left Joins
+```
+admindb=# SELECT * FROM person LEFT JOIN car ON person.car_id = car.id;
+```
+output:
+```
+ id | first_name | last_name | gender |    date_of_birth    |             email             | country_of_birth | car_id | id |   make   |  model  |  price   
+----+------------+-----------+--------+---------------------+-------------------------------+------------------+--------+----+----------+---------+----------
+  1 | Miguel     | Wetherell | Male   | 1985-07-21 00:00:00 | mwetherell0@wp.com            | Norway           |      1 |  1 | Plymouth | Horizon | 45195.78
+  3 | Ettore     | Pitt      | Male   | 1985-11-20 00:00:00 | epitt2@seattletimes.com       | Guatemala        |      3 |  3 | Suzuki   | Vitara  | 88945.57
+  4 | Lynde      | Gresswell | Female | 1981-11-13 00:00:00 | lgresswell3@deliciousdays.com | Kuwait           |      4 |  4 | Ford     | Ranger  | 15626.18
+  5 | Faunie     | Volker    | Female | 1992-12-21 00:00:00 |                               | China            |      5 |  5 | Ford     | Ranger  | 94639.10
+  7 | Jack       | Gegay     | Male   | 1984-08-27 00:00:00 | jgegay6@merriam-webster.com   | China            |        |    |          |         |         
+  6 | Clary      | Armsby    | Female | 1992-04-09 00:00:00 | carmsby5@edublogs.org         | Czech Republic   |        |    |          |         |         
+  2 | Elga       | Balmer    | Female | 1991-07-20 00:00:00 | ebalmer1@tripod.com           | Brazil           |        |    |          |         |         
+(7 rows)
+```
+
+```
+admindb=# SELECT * FROM person LEFT JOIN car ON person.car_id = car.id where car.* IS NULL;
+admindb=# SELECT * FROM person LEFT JOIN car ON person.car_id = car.id where car.id IS NULL;
+admindb=# SELECT * FROM person LEFT JOIN car ON person.car_id = car.id where person.car_id IS NULL;
+
+output:
+
+ id | first_name | last_name | gender |    date_of_birth    |            email            | country_of_birth | car_id | id | make | model | price 
+----+------------+-----------+--------+---------------------+-----------------------------+------------------+--------+----+------+-------+-------
+  2 | Elga       | Balmer    | Female | 1991-07-20 00:00:00 | ebalmer1@tripod.com         | Brazil           |        |    |      |       |      
+  6 | Clary      | Armsby    | Female | 1992-04-09 00:00:00 | carmsby5@edublogs.org       | Czech Republic   |        |    |      |       |      
+  7 | Jack       | Gegay     | Male   | 1984-08-27 00:00:00 | jgegay6@merriam-webster.com | China            |        |    |      |       |      
+(3 rows)
+```
+***NOTE*** Use `IS` Not `=` such as `car.id IS NULL;`
+
+## Deleting Records with Foreign Keys
+```
+ id | first_name | last_name | gender |    date_of_birth    |             email             | country_of_birth | car_id | id |   make   |  model  |  price   
+----+------------+-----------+--------+---------------------+-------------------------------+------------------+--------+----+----------+---------+----------
+  1 | Miguel     | Wetherell | Male   | 1985-07-21 00:00:00 | mwetherell0@wp.com            | Norway           |      1 |  1 | Plymouth | Horizon | 45195.78
+```
+
+We cannot delete this car 1 cz it has a relation with person.id = 1;
+So either: 1. change person.car_id for person 1, then delete car 1.
+Or 2. first delete person 1, then delete car 1;
+
+*** Note *** cascade delete is a bad practice. One should manually handle seperately for each record. Otherwise
+you could delete vital data.
+
+## Exporting results to CSV
+``` admindb=#  SELECT * FROM person LEFT JOIN car ON person.car_id = car.id; ```
+Let we want to export this into a csv file.
+
+```
+\copy (SELECT * FROM person LEFT JOIN car ON person.car_id = car.id) TO '/home/soumic/Codes/cloud-research-odyssey/files-n-datasets/output.csv' DELIMITER ',' CSV HEADER;
+```
+
+## Serial and Sequences
+
+## Extensions
+
+## UUID
