@@ -50,3 +50,7 @@ So now I can use redis from the terminal like this:
 ```
 soumic@hp-laptop:~$ redis-server
 ```
+
+## Getting Started with Programming
+Thanks to [redislabs/get-started-with-redis](https://redislabs.com/get-started-with-redis/)
+
