@@ -36,3 +36,17 @@ OK
 "bar"
 127.0.0.1:6379> 
 ```
+
+## Update $PATH
+Since I installed Redis from source, everytime I want to use redis, I have to manually type the absolute path of redis. This is annoying. To resolve this, I updated my `$PATH` variable by adding the installation directory location. Open `.bashrc` file and add these 2 lines
+```
+# Redis
+export REDIS_HOME="/home/soumic/Applications/redis-6.0.6"
+export PATH=$REDIS_HOME/src:$PATH 
+```
+Remember to replace the path with that of yours.
+So now I can use redis from the terminal like this:
+
+```
+soumic@hp-laptop:~$ redis-server
+```
