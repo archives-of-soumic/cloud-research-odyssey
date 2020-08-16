@@ -12,8 +12,13 @@
 │   │   └── 3-freecodecamp
 │   │       └── freecodecamp-tutorial.md
 │   └── 2-redis
+│       ├── 0-redis.md
+│       ├── 1-redis-hello-world-codes-python.md
+│       ├── 1-redis-start-server.png
+│       ├── 2-redis-hello-world-code-java.md
+│       ├── 2-redis-python-output.png
+│       ├── 3-redis-java-output.png
 │       ├── redis-cli.png
-│       ├── redis.md
 │       ├── redis-server2.png
 │       └── redis-server-run.png
 ├── files-n-datasets
@@ -1984,4 +1989,4 @@
 │                   └── wheel-0.32.3-py2.py3-none-any.whl
 └── tree.md
 
-259 directories, 1725 files
+259 directories, 1730 files
