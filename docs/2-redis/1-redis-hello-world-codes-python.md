@@ -1,4 +1,4 @@
-# Hello World Codes for Redit
+# Hello World Codes for Redis (Python)
 Hello there, wonderful person! In this doc, we'll be creating some basic hello world codes in python
 and in java (java cz it's a statically typed language and so I can understand precisely what data type I am working with. With python, that sometimes becomes awkward / ambiguous. But that's a subjective matter).
 
@@ -71,7 +71,7 @@ If you also see it, you have successfully run the redis hello world in python!
 
 8. In the first terminal, press `ctrl + c` to shut down redis-server.
 
-## Explanation of the code:
+## Explanation of the Code:
 1st import redis. Then `r = redis.Redis()` creates the connection with the redis server that
 you started in the 1st terminal. Redis can be used to demonstrate data-structures like Map.
 So here `r.set("foo", "bar");` creates a map inside redis. You can create multiple key-value 
@@ -83,3 +83,6 @@ The results were in byte. `print(value_in_bytes)` gives `b'bar'`.
 So `value_string = .decode("utf-8");` gives us the desired value.
 
 And that's pretty much it.
+
+## Reference:
+[redislabs/get-started-with-redis/](https://redislabs.com/get-started-with-redis/)

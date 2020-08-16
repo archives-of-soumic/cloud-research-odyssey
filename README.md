@@ -16,4 +16,5 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
     * [Basic Commands](docs/1-postgresql-basics/2-basics/2-basic-commands.md)
     * [FreeCodeCamp tutorial](docs/1-postgresql-basics/3-freecodecamp/freecodecamp-tutorial.md)
 2. [Redis](docs/2-redis/0-redis.md)
-    * [Redis Hello World Codes](docs/2-redis/1-redis-hello-world-codes.md)
+    * [Redis Hello World Codes(Python)](docs/2-redis/1-redis-hello-world-codes-python.md)
+    * [Redis Hello World Codes(Java)](docs/2-redis/2-redis-hello-world-code-java.md)
