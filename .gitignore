@@ -1,6 +1,7 @@
 ./files-n-datasets
 files-n-datasets/
-
+.vscode/
+.idea/
 -------------------------------------
 # gradle.gitignore
 -------------------------------------
