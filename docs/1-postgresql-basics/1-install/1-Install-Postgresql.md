@@ -1,3 +1,5 @@
+![postgresql.png](postgresql.png)
+Image by <a href="https://pixabay.com/users/sasint-3639875/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1822636">Sasin Tipchai</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1822636">Pixabay</a>
 # Installing Postgresql
 The course will be using this database. Hence the first thing to do is install the database. I am 
 currently using `Debian 10 Testing` (actually it's `Linux Mint Debian Edition` alias `LMDE4`, and I tweaked the software sources file by changing `stable` into `testing`, so it's really `Debian 10 Testing` with a different 'skin') as my main os. In production however, one should use a stable os.
