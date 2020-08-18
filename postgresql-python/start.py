@@ -1,13 +1,16 @@
 import os
 from dotenv import load_dotenv
 import psycopg2
+import time
 
 _host="";
 _database="";
 _user="";
 _password="";
 
-CREATE_TABLE_BUSINESS_DATA = '''CREATE TABLE IF NOT EXISTS BUSINESS_DATA (
+TABLE_NAME = "BUSINESS_DATA_PYTHON";
+
+CREATE_TABLE_BUSINESS_DATA = '''CREATE TABLE IF NOT EXISTS ''' + TABLE_NAME + ''' (
     pk BIGSERIAL PRIMARY KEY,
     CompanyName VARCHAR(500),
     EmailAddress VARCHAR(500),
@@ -27,6 +30,14 @@ CREATE_TABLE_BUSINESS_DATA = '''CREATE TABLE IF NOT EXISTS BUSINESS_DATA (
     BusinessCategory VARCHAR(500),
     WebAddress VARCHAR(500)
 );'''
+
+BULK_INSERT_FROM_CSV = '''COPY '''+TABLE_NAME+'''(
+    CompanyName,EmailAddress,ContactFullName,ContactJobTitle,PhoneNumber,FaxNumber,
+    Address,Address2,Address3,Town,County,Postcode,Region,Country, SICCode, 
+    BusinessCategory,WebAddress) 
+    FROM '/home/soumic/Codes/cloud-research-odyssey/files-n-datasets/business_data/input.csv' 
+    DELIMITER '*' csv header;
+'''
 
 def load_env_variables():
     load_dotenv();
@@ -94,62 +105,54 @@ def fetch_query_result(cursor):
     return result;
 
 
-def insert_prototype():
 
-    pass;
 
 if __name__ == "__main__":
     load_env_variables();
     conn = create_connection();
     cursor = create_cursor(conn);
 
-    sql_query_test = "SELECT * FROM person;";
-    execute_query(cursor=cursor, query=sql_query_test);
-    result = fetch_query_result(cursor=cursor);
-    print("----------------------");
-    print(result);
+    # sql_query_test = "SELECT * FROM person;";
+    # execute_query(cursor=cursor, query=sql_query_test);
+    # result = fetch_query_result(cursor=cursor);
+    # print("----------------------");
+    # print(result);
 
     # create_table(conn, cursor, CREATE_TABLE_BUSINESS_DATA);
     execute_query(cursor=cursor, query=CREATE_TABLE_BUSINESS_DATA, conn=conn, is_commit=True);
     print("---------1. CREATE TABLE-------------");
     # print(result);
 
-    # ------------ INSERT PROTOTYPE ------------
-
-    data1 = '''Arlesey Carpet Warehouse,foord.hoffer@arleseycarpets.co.uk,Foord Hoffer,Principal,01462-733350,,Ram Yard,High Street,,Arlesey,Bedfordshire,SG15 6SW,Eastern,England,51471,Housewares,www.arleseycarpets.co.uk'''
-    data2 = '''Arlesey Bicycle Company,struzenski.hassan@rjmclassic.com,Struzenski Hassan,Partner,01462-835970,,Ram Yard,High Street,,Arlesey,Bedfordshire,SG15 6SW,Eastern,England,50400,"Recreational Vehicle, Motorcycle & Boat Retail",www.rjmclassic.com'''
-    header = '''CompanyName,EmailAddress,ContactFullName,ContactJobTitle,PhoneNumber,FaxNumber,Address,Address2,Address3,Town,County,Postcode,Region,Country,SICCode,BusinessCategory,WebAddress'''
-    # 0 based e 14
-    args1 = [];
-    args2 = [];
-    headers = [];
-
-    args1 = data1.split(",");
-    args2 = data2.split(",");
-    headers = header.split(",");
-
-    Insert_prefix = "INSERT INTO business_data ("+header+") VALUES (";
-    Insert_suffix = ");";
-
-    i = -1;
-    insert_values = "";
-    for v in args1:
-        i=i+1;
-        if(i == 14):
-            insert_values = insert_values + v + ",";
-        elif(i == 16):
-            insert_values = insert_values +"'"+v+"'";
-        else:
-            insert_values = insert_values +"'"+v+"',";
+    print("---------2. BULK INSERT ---------------------")
+    start_bulk_insert = time.time();
     
-    sql_insert = Insert_prefix + insert_values + Insert_suffix;
+    execute_query(cursor=cursor, conn=conn, query=BULK_INSERT_FROM_CSV, is_commit=True);
+    
+    end_bulk_insert = time.time();
+    dtime_bulk_insert = end_bulk_insert - start_bulk_insert;
+    print("start_bulk_insert = "+str(start_bulk_insert));
+    print("end_bulk_insert = "+str(end_bulk_insert));
+    print("dtime_bulk_insert = "+str(dtime_bulk_insert));
 
-    execute_query(cursor=cursor, query=sql_insert, conn=conn, is_commit=True);
 
-    execute_query(cursor=cursor, query="select * from business_data;");
+    
+    row_count_query = "SELECT COUNT(*) FROM "+TABLE_NAME+";"
+
+    start_fetch_time = time.time();
+    # ---------------------------
+    execute_query(cursor=cursor, query=row_count_query);
     result = fetch_query_result(cursor=cursor);
+    # ----------------------------
+    end_fetch_time = time.time();
+    dtime_fetch = end_fetch_time - start_fetch_time;
+
+    print("---------3. "+row_count_query+"---------------------")
     print(result);
-    # ------------------------------------------
+    print("start_fetch_time"+str(start_fetch_time));
+    print("end_fetch_time"+str(end_fetch_time));
+    print("dtime_fetch = "+str(dtime_fetch));
+    
+
     close_cursor(cursor);
     close_connection(conn);
 
