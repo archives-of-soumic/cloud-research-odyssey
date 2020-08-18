@@ -7,25 +7,25 @@ _database="";
 _user="";
 _password="";
 
-CREATE_TABLE_BUSINESS_DATA = '''CREATE TABLE IF NOT EXISTs BUSINESS_DATA (
+CREATE_TABLE_BUSINESS_DATA = '''CREATE TABLE IF NOT EXISTS BUSINESS_DATA (
     pk BIGSERIAL PRIMARY KEY,
-    CompanyName VARCHAR(200),
-    EmailAddress VARCHAR(200),
-    ContactFullName VARCHAR(200),
-    ContactJobTitle VARCHAR(200),
-    PhoneNumber VARCHAR(20),
+    CompanyName VARCHAR(500),
+    EmailAddress VARCHAR(500),
+    ContactFullName VARCHAR(500),
+    ContactJobTitle VARCHAR(500),
+    PhoneNumber VARCHAR(50),
     FaxNumber VARCHAR(100),
     Address VARCHAR(500),
     Address2 VARCHAR(500),
     Address3 VARCHAR(500),
-    Town VARCHAR(200),
-    County VARCHAR(200),
-    Postcode VARCHAR(200),
-    Region VARCHAR(200),
-    Country VARCHAR(200),
+    Town VARCHAR(500),
+    County VARCHAR(500),
+    Postcode VARCHAR(500),
+    Region VARCHAR(500),
+    Country VARCHAR(500),
     SICCode INT,
-    BusinessCategory VARCHAR(200),
-    WebAddress VARCHAR(200)
+    BusinessCategory VARCHAR(500),
+    WebAddress VARCHAR(500)
 );'''
 
 def load_env_variables():
