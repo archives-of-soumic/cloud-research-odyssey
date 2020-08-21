@@ -9,6 +9,7 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
 2. Terminal
 
 <!-- [linky](docs/README.md#section) -->
+<!-- ![image name](some_image.png) -->
 # Table of Content
 <!-- [Postgresql tutorial](docs/1-postgresql-basics) -->
 1. [Postgresql tutorial](#)
@@ -16,6 +17,7 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
     * [Basic Commands](docs/1-postgresql-basics/2-basics/2-basic-commands.md)
     * [FreeCodeCamp tutorial](docs/1-postgresql-basics/3-freecodecamp/freecodecamp-tutorial.md)
     * [Bulk Insert](docs/1-postgresql-basics/4-bulk-insert/bulk-insert.md)
+    * [Database Insert Time Explanation](docs/1-postgresql-basics/5-insert-time-explanation/insert-time-explanation.md)
 2. [Redis](docs/2-redis/0-redis.md)
     * [Redis Hello World Codes(Python)](docs/2-redis/1-redis-hello-world-codes-python.md)
     * [Redis Hello World Codes(Java)](docs/2-redis/2-redis-hello-world-code-java.md)
