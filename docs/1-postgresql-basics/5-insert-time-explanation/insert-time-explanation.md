@@ -84,13 +84,15 @@ Therefore, read/write time = transferTime = disk rotation time taken to rotate 1
                            = 0.48 ms
 
 When disk rotation / head adjust takes place, you have to add rotationTime and headAdjustTimes with this transferTime.
-    ``` TotalTime = rotationTime + headAdjustTime + transferTime ```
+``` 
+    TotalTime = rotationTime + headAdjustTime + transferTime 
+```
 
 I don't wish to give another example without drawing a corresponding picture first.
 
 ## Back to our question: What happened?
 So our file size is 500 MB (2 Million data).
-If we calculate just like previously, it should take `500 x 1024 KB / 4 kB x 0.48 ms = 61.44 s` for our Megatron 747. 
+If we calculate just like previously, it should take `500 x 1024 KB / 4 kB x 0.48 ms = 61.44 s` for our Megatron 747 to perform bulk write operation. 
 Practically, some more time will take as there are disk rotation, head adjust, OS context switching etc in play.
 
 Remember, database read/write happens in bulk amount. So in the 2nd code, postgresql reads data from csv in bulk amount (idk, maybe `X` KB at a time). Then it is in main-memory for a short time doing some simple calculations (creating index, etc) FOR ALL THE DATA IN `X` KB. 
@@ -98,6 +100,9 @@ After that, a bulk write of `X` KB into the database takes place.
 
 But when you write the 1st code, it takes more time cz, postgresql reads data from csv in bulk amount (idk, maybe `X` KB at a time). Then it is in main-memory for a short time doing some calculations (eg, creating index) FOR ONLY 1 ROW OUT OF `X` KB DATA. 
 After that, a bulk write of `X` KB into the database takes place.
+
+
 So for the 1st code, this database read / write varies as the number of rows (2 Million in this case).
-So it should take 0.48 ms x 2x10^6 = 960000 s = 11.11 days(!) to insert all the data in Megatron 747 (apparently, that dude had a modern/faster hard disk, hence it took 8 hr).
+
+Therefore, it should take 0.48 ms x 2x10^6 = 960000 s = 11.11 days(!) to insert all the data in Megatron 747 (apparently, that dude had a modern/faster hard disk, hence it took 8 hour).
 
