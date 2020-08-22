@@ -3,6 +3,20 @@ files-n-datasets/
 .vscode/
 .idea/
 -------------------------------------
+# redis
+-------------------------------------
+.idea
+__pycache__
+dump.rdb
+.env
+cluster-node-*.conf
+*.rdb
+*.aof
+data.txt
+**/*.rdb
+**/*.aof
+
+-------------------------------------
 # gradle.gitignore
 -------------------------------------
 .gradle
