@@ -21,7 +21,7 @@ I'm no expert of software documentation, sorry if I'm doing it wrong. But I thin
 2. [Redis](docs/2-redis/0-redis.md)
     * [Redis Hello World Codes(Python)](docs/2-redis/1-redis-hello-world-codes-python.md)
     * [Redis Hello World Codes(Java)](docs/2-redis/2-redis-hello-world-code-java.md)
-
+    * [Solve 918B with Redis and Java](docs/2-redis/2-solve-918B-with-redis-and-java.md)
 ## Useful commands
 ```
 $ virtualenv -p python3 venv
