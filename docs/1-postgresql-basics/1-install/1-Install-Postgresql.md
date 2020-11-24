@@ -18,7 +18,7 @@ So in my case, I saw `deb http://apt.postgresql.org/pub/repos/apt debbie-pgdg ma
 ## Initial Setup
 Postgresql comes with a default user `postgres`. To use postgresql, we can switch to this user. Fire up your terminal and type:
 
-``` 
+```bash 
 $ sudo -u postgres psql
 ```
 Now you should be able to run sql commands as user `postgres`.
@@ -27,7 +27,7 @@ To create a new user:     ``` postgres=# create user myuser with  password 'mypa
 To create a new database: ``` postgres=# create database mydb; ```
 Now we want to assign `myuser` to `mydb`. The command: ``` postgres=# grant all privileges on database mydb to myuser; ```
 
-* If you want to change password: ``` postgres=# alter user myuser with encrypted password '1234'; ```
+* If you want to change password: ```bash postgres=# alter user myuser with encrypted password '1234'; ```
 
 ![Initial Setup](postgresql-initial-setup.png)
 
@@ -38,14 +38,14 @@ Switch over to the postgres account on your terminal by typing:
 $ sudo -i -u postgres
 ```
 You'll see the terminal like this: 
-``` 
+``` bash
 postgres@computer-name:~$ 
 ```
 We can use `psql` command to log in, and then \q to log out. Now we want to create a new database user. We need to create: 
 1. user in postgres, 
 2. user in our linux system
 To create user in postgres, type:
-```
+```bash
 postgres@computer-name:~$ createuser --interactive
 # Output
 Enter name of role to add: admindb
@@ -53,18 +53,18 @@ Shall the new role be a superuser? (y/n) y  # <-- I am creating this as a databa
 ```
 
 Now create a database with the same name. It is some postgresql convension.
-```
+```bash
 postgres@computer-name:~$ createdb admindb
 ```
 
 Now we have to create a Linux User with the same name:
-```
+```bash
 postgres@computer-name:~$ exit      # quit the postgres user and return to your default user
 $ sudo adduser --no-create-home admindb    #  --no-create-home flag prevents creating new home
 ```
 
 Once this new account is available, you can switch over and connect to the database by typing:
-```
+```bash
 $ sudo -i -u admindb
 admindb@computer-name:~$ psql
 admindb=#                           # you have logged into the database user admindb

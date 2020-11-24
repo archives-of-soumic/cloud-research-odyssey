@@ -1,7 +1,7 @@
 # Basic Commands
 ## Creating and Deleting Tables
 Basic command:
-```
+```sql
 CREATE TABLE table_name (
     column_name1 col_type (field_length) column_constraints,
     column_name2 col_type (field_length),
@@ -9,7 +9,7 @@ CREATE TABLE table_name (
 );
 ```
 So for example:
-```
+```sql
 CREATE TABLE playground (
     id serial PRIMARY KEY,
     type varchar (50) NOT NULL,
@@ -21,14 +21,14 @@ CREATE TABLE playground (
 
 We can see out table by typing:
 
-```
+```sql
 admindb=# \d
 ```
 ![create a table](create-a-table.png)
 
 ##  Adding, Querying, and Deleting Data in a Table
 * Adding
-```
+```sql
 INSERT INTO playground (type, color, location, install_date) 
 VALUES ('slide','blue', 'south','2020-08-13');
 
@@ -37,16 +37,16 @@ VALUES ('swing', 'yellow', 'north', '2018-08-16');
 ```
 * Quering:
 We can see these values such as:
-```
+```sql
 SELECT * FROM PLAYGROUND;
 SELECT * FROM PLAYGROUND WHERE ID = 1;
 ```
 * Adding and Deleting Columns from a Table
-```
+```sql
 ALTER TABLE playground ADD last_maint DATE;
 ```
 sO NOW THE TABLE LOOKS LIKE THIS:
-```
+```sql
 admindb=# SELECT * FROM PLAYGROUND;
  id | type  | color  | location | install_date | last_maint 
 ----+-------+--------+----------+--------------+------------
@@ -55,12 +55,12 @@ admindb=# SELECT * FROM PLAYGROUND;
 (2 rows)
 ```
 
-```
+```sql
 ALTER TABLE PLAYGROUND DROP last_maint;
 ```
 
 * Updating Data in a Table
-```
+```sql
 UPDATE playground SET color = 'red' 
 WHERE type = 'swing';
 ```
@@ -68,7 +68,7 @@ WHERE type = 'swing';
 ![update a value](update-a-value.png)
 
 To view the table:
-```
+```sql
 admindb=# \d playground
 
                                       Table "public.playground"

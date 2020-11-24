@@ -17,7 +17,7 @@ Finally, output is `command, ip, mp.get(ip);`.
 Create a folder named `clusters`. Create 6 files named `800x.conf`. (x = 0,1,2,3,4,5).
 Edit the contents in `800x.conf` like this:
 
-```
+```yml
 port 800x
 cluster-enabled yes
 cluster-config-file cluster-node-0.conf
@@ -28,14 +28,14 @@ dbfilename dump-0.rdb
 ```
 
 Now open 6 terminals. In each of them, invode the command:
-```
+```bash
 redis-server /path/to/clusters/800x.conf
 ```
 
 ![image name](4-redis-single-instance.png)
 
 Now open 7th terminal and run:
-```
+```bash
 redis-cli --cluster create 127.0.0.1:8000 127.0.0.1:8001 \
         127.0.0.1:8002 127.0.0.1:8003 127.0.0.1:8004 127.0.0.1:8005 \
         --cluster-replicas 1
@@ -48,7 +48,7 @@ Once done, create a java project with `jedis` dependency. I'll be using gradle f
 Create a file (say, `B918.java`).
 
 To connect with the redis cluster, use this code:
-```
+```java
 String host = "127.0.0.1";
 int portNumberOfAMaster = 8000;
 JedisCluster jedisClusterMap = new JedisCluster(new HostAndPort(host, portNumberOfAMaster));
@@ -57,7 +57,7 @@ Here we only have to provide one master's port. Jedis will autodetect the rest o
 
 Now that we have a connected java with redis, we can read input (say, from a file) and insert them in map:
 
-```
+```java
 
             for(int i=0; i<n; i++) {
                 serverName = sc.next().trim(); // trim removes \n, \t, etc string literals
@@ -69,7 +69,7 @@ Now that we have a connected java with redis, we can read input (say, from a fil
 ```
 
 And finally, on each query, we create the output tuples like this way:
-```
+```java
    for(int i=0; i<m; i++) {
                 command = sc.next().trim();
                 ip = sc.next().trim();

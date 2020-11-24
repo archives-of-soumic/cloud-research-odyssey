@@ -2,7 +2,7 @@
 
 Before we begin, let's start with 2 simple simple code snippets:
 1. Bulk insert using a for loop:
-```
+```python
 for row in dataset_scv:
     insert_statement = "INSERT INTO some_table ("+ row +");";
     cursor.query(insert_statement);
@@ -10,7 +10,7 @@ for row in dataset_scv:
 ```
 
 2. Bulk insert using, say, COPY command:
-```
+```python
 
 insert_statement = "COPY some_table(
     CompanyName,EmailAddress,ContactFullName,ContactJobTitle,PhoneNumber,FaxNumber,

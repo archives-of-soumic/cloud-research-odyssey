@@ -2,7 +2,7 @@
 So I have a dataset with some 2 M rows and 17 columns. I used the `COPY` command to 
 insert the data from terminal. It took about 52 seconds.
 
-```
+```sql
 COPY business_data(CompanyName,EmailAddress,ContactFullName,ContactJobTitle,PhoneNumber,FaxNumber,Address,Address2,Address3,Town,County,Postcode,Region,Country, SICCode, BusinessCategory,WebAddress) FROM '/home/soumic/Codes/cloud-research-odyssey/files-n-datasets/business_data/input.csv' DELIMITER '*' csv header;
 ```
 
@@ -10,7 +10,7 @@ The main trouble was cleaning up the data rather than the actual insert. I used 
 
 # Postgresql Tests With Python
 In this jupyter notebook, I will be testing bulk insert, execute some queries on about 2 million rows of data, and save their execution times.
-```
+```python
 Import libraries
 import os
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ import psycopg2
 import time
 ```
 ## Declare Variables and SQL Commands
-```
+```python
 _host="";
 _database="";
 _user="";
@@ -60,7 +60,7 @@ QUERY_DELETE = '''DELETE FROM '''+TABLE_NAME + ''' WHERE PK&1 == 1;''';
 QUERY_DROP = '''DROP TABLE '''+TABLE_NAME+''';''';
 ```
 ## Load Credentials From .Env File
-```
+```python
 def load_env_variables():
     load_dotenv();
     
@@ -73,7 +73,7 @@ def load_env_variables():
 ```
 ## Create and Close Connections
 I'll define some functions that will connect us to postgresql. When work is finished, we should close the connections:
-```
+```python
 def create_connection():
     conn = None;
     try:
@@ -107,7 +107,7 @@ def close_cursor(cursor):
     pass;
 ```
 ## Main Function Start
-```
+```python
 if __name__ == "__main__":
     load_env_variables();
     conn = create_connection();
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     # close_connection(conn);
 ```
 ## Create Table
-```
+```python
 
 print("---------1. CREATE TABLE-------------");
 start_time1 = time.time();
@@ -134,7 +134,7 @@ print("Time to create table = "+dt1);
 ```
 Output
 ## InsertData
-```
+```python
 # load_env_variables();
 # conn = create_connection();
 # cursor = create_cursor(conn);
@@ -158,7 +158,7 @@ print("dtime_bulk_insert = "+str(dtime_bulk_insert));
 ```
 Output
 ## Execute Some Simple Queries
-```
+```python
 # load_env_variables();
 # conn = create_connection();
 # cursor = create_cursor(conn);
@@ -182,7 +182,7 @@ print("dtime_3 = "+str(dtime_3));
 ```
 Output
 ## Delete 50% Data Like Thanos :fire:
-```
+```python
 # load_env_variables();
 # conn = create_connection();
 # cursor = create_cursor(conn);
@@ -206,7 +206,7 @@ print("dtime_4 = "+str(dtime_4));
 ```
 Output
 ## Drop Table
-```
+```python
 # load_env_variables();
 # conn = create_connection();
 # cursor = create_cursor(conn);
@@ -230,7 +230,7 @@ print("dtime_5 = "+str(dtime_5));
 ```
 Output
 ## Close Connections
-```
+```python
 close_cursor(cursor);
 close_connection(conn);
 
@@ -238,7 +238,7 @@ close_connection(conn);
 ```
 ## Something Went Wrong
 Idk why but the jupyter notebook is not running :/ The code is almost similar to start.py codes which is running but not this :exploding_head: . Some results that I copied from terminal:
-```
+```bash
  ---------1. CREATE TABLE-------------
 start_bulk_insert = 1597764497.665616
 end_bulk_insert = 1597764525.7351696

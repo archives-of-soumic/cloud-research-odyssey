@@ -5,7 +5,7 @@ and in java (java cz it's a statically typed language and so I can understand pr
 ## Basic Code with Python
 1. Setup python on your computer. I'm using debian, and for convenience, I prefer to install `Miniconda` which has some handy features and kind of makes python 3 'the default python'. We also need
 `virtualenv`:
-```
+```bash
 $ sudo apt install virtualenv
 ```
 Virtualenv is handy to install python packages only for a particular project and resolve dependency errors , stuffs like that.
@@ -13,23 +13,23 @@ Virtualenv is handy to install python packages only for a particular project and
 2. Now create a folder(say `redis-codes/redis-python/` in my repository) and create a new python file, say, `redis_python.py`
 
 3. create a virtualenv, say, `venv`:
-```
+```bash
 $ cd /redis-codes/redis-python
 redis-codes/redis-python$ virtualenv venv
 ```
 You sould see a new folder `venv` inside redis-python. Otherwise you are in a wrong place in the terminal.
 Now:
-```
+```bash
 redis-codes/redis-python$ source venv/bin/activate
 (venv) redis-codes/redis-python$                     # <---- You should see (venv) at beginning
 ```
 4. Now we need to install `redis-py` package inside this `venv`.
-```
+```bash
 (venv) redis-codes/redis-python$ pip install redis
 ```
 
 5. Now open `redis_python.py` and type in the codes:
-```
+```python
 import redis
 
 ''' 
@@ -54,14 +54,14 @@ if __name__ == "__main__":
 ```
 
 6. Fire up a terminal and run:
-```
+```bash
 $ redis-server
 ```
 You should see something like this:
 ![Initial Setup](1-redis-start-server.png)
 
 7. Now from a 2nd terminal, run `redis_python.py`
-```
+```bash
 (venv) redis-codes/redis-python$ python redis_python.py
 ```
 You should see output like this:
